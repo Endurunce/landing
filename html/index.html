@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Endurunce — Slimmer trainen. Sneller herstellen.</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <meta name="description" content="AI-gestuurde loopschema's die zich aanpassen aan jouw lichaam — inclusief blessure-herstel." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --moss:    #4A5E3A;
+      --terra:   #C4622D;
+      --sand:    #E8D5B7;
+      --sky:     #6B9BAE;
+      --stone:   #3A3A3A;
+      --gold:    #D4A853;
+      --light:   #F5F0E8;
+      --dark:    #1E1E1A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2rem;
+      background: rgba(30,30,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--light);
+      text-decoration: none;
+    }
+    .logo span { color: var(--terra); }
+
+    nav a.cta-nav {
+      background: var(--terra);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    nav a.cta-nav:hover { background: #a84e22; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,94,58,0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(196,98,45,0.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(212,168,83,0.12);
+      border: 1px solid rgba(212,168,83,0.3);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 820px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--terra);
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(245,240,232,0.65);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--terra);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #a84e22; transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: var(--light);
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.13); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat { text-align: center; }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(245,240,232,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 7rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 4rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-4px); }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--light);
+    }
+    .feature-card p {
+      font-size: 0.92rem;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.65;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding: 7rem 2rem;
+      background: rgba(74,94,58,0.08);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .how-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--moss);
+      border: 2px solid rgba(74,94,58,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--sand);
+    }
+
+    .step-content h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .step-content p {
+      font-size: 0.9rem;
+      color: rgba(245,240,232,0.55);
+    }
+
+    /* ── INJURY SECTION ── */
+    .injury {
+      padding: 7rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 700px) {
+      .injury { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .injury-text h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      line-height: 1.15;
+    }
+    .injury-text h2 em { font-style: normal; color: var(--terra); }
+
+    .injury-text p {
+      color: rgba(245,240,232,0.6);
+      margin-bottom: 1rem;
+      font-size: 0.97rem;
+    }
+
+    .injury-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+    }
+    .pill {
+      background: rgba(196,98,45,0.15);
+      border: 1px solid rgba(196,98,45,0.3);
+      color: #e8906a;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .injury-visual {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.5rem;
+      padding: 2rem;
+    }
+
+    .severity-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .severity-row:last-child { border-bottom: none; }
+
+    .severity-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sev-label { font-size: 0.9rem; font-weight: 600; flex: 1; }
+    .sev-desc { font-size: 0.8rem; color: rgba(245,240,232,0.5); }
+    .sev-badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 8rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(196,98,45,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .cta-section p {
+      color: rgba(245,240,232,0.6);
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(245,240,232,0.3);
+    }
+    footer a { color: rgba(245,240,232,0.5); text-decoration: none; }
+    footer a:hover { color: var(--light); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="/"><img src="logo-white.svg" alt="Endurunce" height="36" style="display:block;"></a>
+    <a class="cta-nav" href="https://app.endurunce.nl">Open de app</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-eyebrow">Gemaakt voor lopers die niet stoppen</span>
+    <h1>Slimmer trainen.<br /><em>Sneller herstellen.</em></h1>
+    <p>Persoonlijke loopschema's die zich aanpassen aan jouw lichaam — inclusief blessure-herstel, standaard ingebouwd.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://app.endurunce.nl">Gratis beginnen</a>
+      <a class="btn-secondary" href="#features">Hoe werkt het?</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-value">6</span>
+        <span class="stat-label">Trainingsfases</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">5km→Ultra</span>
+        <span class="stat-label">Wedstrijddoelen</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">Adaptief</span>
+        <span class="stat-label">Blessure-herstel</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">Strava</span>
+        <span class="stat-label">Integratie</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <p class="section-label">Functies</p>
+    <h2 class="section-title">Alles wat jouw training nodig heeft</h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,94,58,0.3)">📅</div>
+        <h3>Slimme trainingsschema's</h3>
+        <p>Op basis van jouw wedstrijddoel, huidige conditie en beschikbare trainingsdagen. Opbouw, Piek, Tapering — de volledige cyclus, voor jou samengesteld.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(196,98,45,0.25)">🩹</div>
+        <h3>Blessure-bewust herstel</h3>
+        <p>Meld een blessure en je schema past zich automatisch aan. Licht, matig of ernstig — elk niveau triggert een op maat gemaakt herstelprotocol.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(107,155,174,0.25)">📊</div>
+        <h3>Sessie-feedback</h3>
+        <p>Log hoe elke training aanvoelde. Pijn en vermoeidheidsignalen worden meegenomen in je schema voordat ze echte problemen worden.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(212,168,83,0.2)">🔗</div>
+        <h3>Strava-integratie</h3>
+        <p>Koppel je Strava-account om je echte activiteiten binnen te halen. Je schema blijft synchroon met wat je daadwerkelijk loopt.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,94,58,0.3)">❤️</div>
+        <h3>Hartslagzones</h3>
+        <p>Karvonen-gebaseerde hartslagzones berekend op basis van jouw persoonlijke max- en rusthartslag. Elke sessie op de juiste intensiteit.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(139,123,139,0.25)">🗓️</div>
+        <h3>Herstelweken</h3>
+        <p>Automatische deload-weken verweven in je schema. Want progressie zonder rust is slechts een langzame weg naar blessures.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="how-inner">
+      <p class="section-label">Hoe het werkt</p>
+      <h2 class="section-title">Van nul naar wedstrijdklaar in minuten</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Vertel ons over jezelf</h3>
+            <p>Leeftijd, geslacht, huidige weekkilometers, terreinvoorkeur en beschikbare trainingsdagen. Duurt 2 minuten.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Kies je wedstrijddoel</h3>
+            <p>5K, 10K, halve marathon, marathon of ultra. Wij stellen piek-km en faseduur dienovereenkomstig in.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Ontvang jouw schema</h3>
+            <p>Een week-voor-week overzicht met sessietypes, doeltempos en hartslagzones — direct gegenereerd.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Train, log en pas aan</h3>
+            <p>Markeer sessies als voltooid, log feedback en meld blessures. Je schema evolueert met je mee tot aan de wedstrijd.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INJURY -->
+  <section class="injury">
+    <div class="injury-text">
+      <h2>Gebouwd voor als het <em>misgaat</em></h2>
+      <p>De meeste trainingsapps vallen uit elkaar zodra je geblesseerd raakt. Endurunce is van dag één ontworpen rondom blessure-herstel.</p>
+      <p>Of het nou een strakke kuit is of een stressfractuur — de app bepaalt de ernst en past je schema aan: minder belasting, vervangende training en geleidelijke opbouw.</p>
+      <div class="injury-pills">
+        <span class="pill">Kniepijn</span>
+        <span class="pill">Scheenbeenvliesontsteking</span>
+        <span class="pill">Stressfractuur</span>
+        <span class="pill">Achillespees</span>
+        <span class="pill">IT-band</span>
+        <span class="pill">Hielspoor</span>
+      </div>
+    </div>
+    <div class="injury-visual">
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(245,240,232,0.4);margin-bottom:1.25rem;">Blessure-ernstprotocol</div>
+      <div class="severity-row">
+        <div class="severity-dot" style="background:#6BBF59"></div>
+        <div class="sev-label">Licht</div>
+        <div class="sev-desc">Intensiteit verminderen, geen rustdagen</div>
+        <span class="sev-badge" style="background:rgba(107,191,89,0.15);color:#6BBF59">-20% belasting</span>
+      </div>
+      <div class="severity-row">
+        <div class="severity-dot" style="background:#E8A020"></div>
+        <div class="sev-label">Matig</div>
+        <div class="sev-desc">Rust + vervangende training</div>
+        <span class="sev-badge" style="background:rgba(232,160,32,0.15);color:#E8A020">2 wk herstel</span>
+      </div>
+      <div class="severity-row">
+        <div class="severity-dot" style="background:#C4622D"></div>
+        <div class="sev-label">Ernstig</div>
+        <div class="sev-desc">Volledige rust, uitgebreide opbouwfase</div>
+        <span class="sev-badge" style="background:rgba(196,98,45,0.2);color:#C4622D">6 wk herstel</span>
+      </div>
+      <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,255,255,0.04);border-radius:0.75rem;font-size:0.8rem;color:rgba(245,240,232,0.5);line-height:1.6;">
+        Het schema past automatisch de resterende weken aan, stelt het wedstrijddoel uit indien nodig en bouwt het volume geleidelijk weer op.
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Klaar om te beginnen?</h2>
+    <p>Gratis te gebruiken. Geen creditcard. Gewoon lopen.</p>
+    <a class="btn-primary" href="https://app.endurunce.nl" style="font-size:1.1rem;padding:1rem 2.5rem;">Open de app</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Endurunce &nbsp;·&nbsp; <a href="https://api.endurunce.nl/health">API Status</a> &nbsp;·&nbsp; <a href="https://github.com/Endurunce">GitHub</a></p>
+  </footer>
+
+</body>
+</html>
