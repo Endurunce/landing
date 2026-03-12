@@ -1,16 +1,6 @@
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:alpine
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY html /usr/share/nginx/html
 
-RUN printf 'server {\n\
-    listen 80;\n\
-    root /usr/share/nginx/html;\n\
-    index index.html;\n\
-    location / {\n\
-        try_files $uri $uri/ /index.html;\n\
-    }\n\
-    gzip on;\n\
-    gzip_types text/html text/css application/javascript;\n\
-}\n' > /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
+EXPOSE 8080
